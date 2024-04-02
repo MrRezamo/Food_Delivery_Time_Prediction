@@ -45,7 +45,6 @@ from sklearn.metrics import (
     auc,
     confusion_matrix,
     ConfusionMatrixDisplay,
-    plot_roc_curve,
 )
 
 # Preprocessing tools
@@ -510,40 +509,6 @@ def test_model(model, X_train, X_test, y_train, y_test, logger, average='binary'
 
     # Return metrics for further use
     return {'train': metrics_train, 'test': metrics_test}
-
-
-
-def plot_roc_and_confusion_matrix(model, X_test, y_test, display_labels=None):
-    """
-    Plots the Receiver Operating Characteristic (ROC) curve and the confusion matrix for a given model.
-
-    Parameters:
-    - model: The trained model for which the ROC curve and confusion matrix are plotted.
-    - X_test: The input features for the test set.
-    - y_test: The true labels for the test set.
-    - display_labels: Dictionary or None, optional
-        Labels for the classes in the confusion matrix. If None, integers are used as labels.
-
-    Returns:
-    None
-    """
-    # Set up the subplot
-    fig, ax = plt.subplots(figsize=(12, 5), nrows=1, ncols=2, gridspec_kw={"width_ratios": [2, 1]})
-
-    # Plot ROC Curve
-    plot_roc_curve(model, X_test, y_test, ax=ax[0])
-    ax[0].set_title('Receiver Operating Characteristic (ROC) Curve')
-    ax[0].grid(True)
-
-    # Plot Confusion Matrix
-    cm = confusion_matrix(y_test, model.predict(X_test))
-    display_labels = display_labels or ['Class 0', 'Class 1']
-    ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=display_labels).plot(cmap="Blues", ax=ax[1], colorbar=False)
-    ax[1].set_title('Confusion Matrix')
-
-    plt.tight_layout()
-    plt.show()
-
 
 
 def get_column_types(df, verbose=True):
