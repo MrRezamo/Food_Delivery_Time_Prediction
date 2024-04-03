@@ -70,10 +70,16 @@ from statsmodels.tools.tools import add_constant
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 
-
+# colors
 COLOR_MAIN = "#69b3a2"
 COLOR_CONTRAST = "#B3697A"
+Rich_Purple = "#7D5A5A"
+Warm_Beige = "#F3EBD3" 
+Deep_Teal = "#31708E"
+Soft_Yellow = "#F2E394"
 
+custom_palette = [Rich_Purple,Warm_Beige,
+                  Deep_Teal,Soft_Yellow]
 
 def get_cmap():
     """
@@ -82,13 +88,13 @@ def get_cmap():
     Returns:
     matplotlib.colors.LinearSegmentedColormap: The matplotlib colormap.
     """
-    norm = matplotlib.colors.Normalize(-1, 1)
+    norm = mpl.colors.Normalize(-1, 1)
     colors = [
         [norm(-1.0), COLOR_CONTRAST],
         [norm(0.0), "#ffffff"],
         [norm(1.0), COLOR_MAIN],
     ]
-    return matplotlib.colors.LinearSegmentedColormap.from_list("", colors)
+    return mpl.colors.LinearSegmentedColormap.from_list("", colors)
 
 
 def countplot(
@@ -126,6 +132,7 @@ def countplot(
 
     ## Create axis if not provided
     fig, ax = plt.subplots(1, 1, figsize=(10, 5)) if ax is None else (plt.gcf(), ax)
+    palette = custom_palette if hue else COLOR_MAIN
 
     if hue:
         if horizontal:
@@ -134,7 +141,7 @@ def countplot(
                 y=column_name,
                 ax=ax,
                 color=COLOR_MAIN,
-                palette=[COLOR_MAIN, COLOR_CONTRAST],
+                palette=palette,
                 hue=hue,
             )
         else:
@@ -143,14 +150,14 @@ def countplot(
                 x=column_name,
                 ax=ax,
                 color=COLOR_MAIN,
-                palette=[COLOR_MAIN, COLOR_CONTRAST],
+                palette=palette,
                 hue=hue,
             )
     else:
         if horizontal:
-            sns.countplot(data=data, y=column_name, ax=ax, color=COLOR_MAIN)
+            sns.countplot(data=data, y=column_name, ax=ax, color=palette)
         else:
-            sns.countplot(data=data, x=column_name, ax=ax, color=COLOR_MAIN)
+            sns.countplot(data=data, x=column_name, ax=ax, color=palette)
 
     ## Add bar labels
     if bar_labels:
