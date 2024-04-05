@@ -424,29 +424,6 @@ def plot_correlation_heatmap(df, title='Correlation Heatmap', figsize=(15, 10), 
 
 
 
-def prep_data(data: pd.DataFrame):
-    """
-    Preprocesses the given DataFrame by dropping unnecessary columns and filtering out invalid data.
-
-    Args:
-        data (pd.DataFrame): The input DataFrame to be preprocessed.
-
-    Returns:
-        pd.DataFrame: The preprocessed DataFrame.
-    """
-    assert isinstance(data, pd.DataFrame)
-    df = data.copy()
-    df.drop(columns=["id"], inplace=True, axis=1)
-    df.drop(df.loc[df["gender"] == "Other"].index, inplace=True)
-    df.drop(
-        df.loc[(df["age"] > 16) & (df["work_type"] == "Never_worked")].index,
-        inplace=True,
-        axis=0,
-    )
-    df.loc[df["work_type"] == "Never_worked", "work_type"] = "children"
-    return df
-
-
 def plot_shap_values(model, X, explainer=None, feature_names=None, plot_size=(7, 5)):
     """
     Plots the SHAP values for a given model and test data.
